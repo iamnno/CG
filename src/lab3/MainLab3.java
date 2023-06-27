@@ -1,4 +1,4 @@
-package src.lab3;
+package lab3;
 
 public class MainLab3 {
 }

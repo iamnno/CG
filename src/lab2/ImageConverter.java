@@ -6,13 +6,13 @@ import java.io.IOException;
 public class ImageConverter {
 
     public static void main(String[] args) throws IOException {
-        String bmpFile = "test1.bmp";
-        BMPImageReader bmpReader = new BMPImageReader();
-        byte[] imagePixels = bmpReader.readImage(bmpFile);
-        int width = bmpReader.getWidth(bmpFile);
-        int height = bmpReader.getHeight(bmpFile);
+        String bmpFile = "D:/!IK-02/3_2 CG/test1.bmp";
+        BMPImageData bmpData = new BMPImageReader().readImage(bmpFile);
+        byte[] imagePixels = bmpData.getImagePixels();
+        int width = bmpData.getWidth();
+        int height = bmpData.getHeight();
 
-        String ppmFile = "test1.ppm";
+        String ppmFile = "D:/!IK-02/3_2 CG/t11111.ppm";
 
         try {
             convertBmpToPpm(imagePixels, width, height, ppmFile);

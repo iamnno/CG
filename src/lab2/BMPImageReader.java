@@ -4,10 +4,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class BMPImageReader {
-    public byte[] readImage(String file) throws IOException {
+    public BMPImageData readImage(String file) throws IOException {
 
         FileInputStream inputStream = new FileInputStream(file);
         byte[] imagePixels = null;
+        BMPImageData imageData = null;
 
         try {
 
@@ -24,53 +25,16 @@ public class BMPImageReader {
             imagePixels = new byte[imageSize];
             inputStream.read(imagePixels);
 
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-        }
-
-        return imagePixels;
-    }
-    public int getWidth (String file) throws IOException{
-        FileInputStream inputStream = new  FileInputStream(file);
-        int width = 0;
-
-        try {
-
-            // Чтение заголовка BMP файла (54 байта)
-            byte[] header = new byte[54];
-            inputStream.read(header);
-
-            // Определение ширины и высоты изображения из заголовка
-            width = byteArrayToInt(header, 18);
+            // Создание объекта ImageData и передача данных
+            imageData = new BMPImageData(imagePixels, width, height);
 
         } finally {
             if (inputStream != null) {
                 inputStream.close();
             }
         }
-        return width;
-    }
 
-    public int getHeight (String file) throws IOException{
-        FileInputStream inputStream = new FileInputStream(file);
-        int height = 0;
-
-        try {
-
-            // Чтение заголовка BMP файла (54 байта)
-            byte[] header = new byte[54];
-            inputStream.read(header);
-
-            height = byteArrayToInt(header, 22);
-
-        } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
-        }
-        return height;
+        return imageData;
     }
 
     private int byteArrayToInt(byte[] bytes, int offset) {

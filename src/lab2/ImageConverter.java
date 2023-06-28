@@ -7,10 +7,10 @@ public class ImageConverter {
 
     public static void main(String[] args) throws IOException {
         String bmpFile = "image.bmp";
-        BMPImageData bmpData = new BMPImageReader().readImage(bmpFile);
-        byte[] imagePixels = bmpData.getImagePixels();
-        int width = bmpData.getWidth();
-        int height = bmpData.getHeight();
+        BMPImageReader bmpReader = new BMPImageReader();
+        byte[] imagePixels = bmpReader.readImage(bmpFile);
+        int width = bmpReader.getWidth(bmpFile);
+        int height = bmpReader.getHeight(bmpFile);
 
         String ppmFile = "image.ppm";
 
@@ -26,6 +26,7 @@ public class ImageConverter {
             FileOutputStream fileOutputStream = new FileOutputStream(ppmFile);
             String ppmHeader = "P6\n" + width + " " + height + "\n255\n";
             fileOutputStream.write(ppmHeader.getBytes());
+            reverseArray(imagePixels);
 
             for (int i = 0; i < imagePixels.length; i += 3) {
                 int red = imagePixels[i] & 0xFF;
@@ -43,4 +44,20 @@ public class ImageConverter {
             e.printStackTrace();
         }
     }
+    public static void reverseArray(byte[] array) {
+        int left = 0;
+        int right = array.length - 1;
+
+        while (left < right) {
+
+            byte temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
+
+            left++;
+            right--;
+        }
+    }
+
+
 }

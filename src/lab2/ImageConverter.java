@@ -8,11 +8,11 @@ import java.io.IOException;
 public class ImageConverter {
 
     public static void main(String[] args) throws IOException {
-        String bmpFile = "image.bmp";
+        String bmpFile = "D:/!IK-02/3_2 CG/test2.bmp";
         BMPImageReader bmpReader = new BMPImageReader();
         byte[] imagePixels = bmpReader.readImage(bmpFile);
-        int width = 0;
-        int height = 0;
+        int width = bmpReader.getWidth(bmpFile);
+        int height = bmpReader.getHeight(bmpFile);
 
         String ppmFile = "image.ppm";
 

@@ -6,13 +6,13 @@ import java.io.IOException;
 public class ImageConverter {
 
     public static void main(String[] args) throws IOException {
-        String bmpFile = "image.bmp";
+        String bmpFile = "test1.bmp";
         BMPImageReader bmpReader = new BMPImageReader();
         byte[] imagePixels = bmpReader.readImage(bmpFile);
         int width = bmpReader.getWidth(bmpFile);
         int height = bmpReader.getHeight(bmpFile);
 
-        String ppmFile = "image.ppm";
+        String ppmFile = "test1.ppm";
 
         try {
             convertBmpToPpm(imagePixels, width, height, ppmFile);
@@ -28,10 +28,22 @@ public class ImageConverter {
             fileOutputStream.write(ppmHeader.getBytes());
             reverseArray(imagePixels);
 
+            for (int row = 0; row < height; row++) {
+                int rowStart = row * width * 3; // Каждый пиксель представлен тремя значениями RGB (3 * ширина)
+                int rowEnd = rowStart + width * 3 - 1;
+                while (rowStart < rowEnd) {
+                    byte temp = imagePixels[rowStart];
+                    imagePixels[rowStart] = imagePixels[rowEnd];
+                    imagePixels[rowEnd] = temp;
+                    rowStart++;
+                    rowEnd--;
+                }
+            }
+
             for (int i = 0; i < imagePixels.length; i += 3) {
-                int red = imagePixels[i] & 0xFF;
+                int blue = imagePixels[i] & 0xFF;
                 int green = imagePixels[i + 1] & 0xFF;
-                int blue = imagePixels[i + 2] & 0xFF;
+                int red = imagePixels[i + 2] & 0xFF;
 
                 fileOutputStream.write((byte) red);
                 fileOutputStream.write((byte) green);
@@ -57,6 +69,7 @@ public class ImageConverter {
             left++;
             right--;
         }
+
     }
 
 

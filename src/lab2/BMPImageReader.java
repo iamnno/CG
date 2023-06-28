@@ -1,4 +1,46 @@
 package lab2;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class BMPImageReader {
+    public byte[] readImage(String file) throws IOException {
+
+        FileInputStream inputStream = null;
+        byte[] imagePixels = null;
+
+        try {
+            inputStream = new FileInputStream(file);
+
+            // Чтение заголовка BMP файла (54 байта)
+            byte[] header = new byte[54];
+            inputStream.read(header);
+
+            // Определение ширины и высоты изображения из заголовка
+            int width = byteArrayToInt(header, 18);
+            int height = byteArrayToInt(header, 22);
+
+            // Чтение пикселей изображения
+            int imageSize = width * height * 3; // Размер пикселей (без выравнивания)
+            imagePixels = new byte[imageSize];
+            inputStream.read(imagePixels);
+
+            System.out.println("Ширина изображения: " + width);
+            System.out.println("Высота изображения: " + height);
+            System.out.println("Общее количество пикселей: " + (imageSize / 3));
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+
+        return imagePixels;
+    }
+
+    private int byteArrayToInt(byte[] bytes, int offset) {
+        return (bytes[offset + 3] & 0xFF) << 24 |
+                (bytes[offset + 2] & 0xFF) << 16 |
+                (bytes[offset + 1] & 0xFF) << 8 |
+                bytes[offset] & 0xFF;
+    }
 }

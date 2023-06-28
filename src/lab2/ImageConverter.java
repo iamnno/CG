@@ -7,9 +7,10 @@ import java.io.IOException;
 
 public class ImageConverter {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String bmpFile = "image.bmp";
-        byte[] imagePixels = new byte[1];
+        BMPImageReader bmpReader = new BMPImageReader();
+        byte[] imagePixels = bmpReader.readImage(bmpFile);
         int width = 0;
         int height = 0;
 

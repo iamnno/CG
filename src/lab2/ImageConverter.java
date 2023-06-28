@@ -6,16 +6,44 @@ import java.io.IOException;
 public class ImageConverter {
 
     public static void main(String[] args) throws IOException {
-        String bmpFile = "D:/!IK-02/3_2 CG/test1.bmp";
-        BMPImageData bmpData = new BMPImageReader().readImage(bmpFile);
-        byte[] imagePixels = bmpData.getImagePixels();
-        int width = bmpData.getWidth();
-        int height = bmpData.getHeight();
+          String ppmFile = "image.ppm";
+          PPMImageData ppmData = new PPMImageReader().readImage(ppmFile);
 
-        String ppmFile = "D:/!IK-02/3_2 CG/t11111.ppm";
+          byte[] imagePixels = ppmData.getImagePixels();
+          int width = ppmData.getWidth();
+          int height = ppmData.getHeight();
 
+          String ppmEndFile = "copy.ppm";
+          convertPPMToPpm(imagePixels, width, height, ppmEndFile);
+
+//        BMPImageData bmpData = new BMPImageReader().readImage(bmpFile);
+//        byte[] imagePixels = bmpData.getImagePixels();
+//        int width = bmpData.getWidth();
+//        int height = bmpData.getHeight();
+//
+//        String ppmFile = "D:/!IK-02/3_2 CG/t11111.ppm";
+//
+//        try {
+//            convertBmpToPpm(imagePixels, width, height, ppmFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    public static void convertPPMToPpm(byte[] imagePixels, int width, int height, String ppmFile) throws IOException {
         try {
-            convertBmpToPpm(imagePixels, width, height, ppmFile);
+            FileOutputStream fileOutputStream = new FileOutputStream(ppmFile);
+            String ppmHeader = "P6\n" + width + " " + height + "\n255\n";
+            fileOutputStream.write(ppmHeader.getBytes());
+            reverseArray(imagePixels);
+
+
+            for (int i = 0; i < imagePixels.length; i++) {
+                fileOutputStream.write(imagePixels[i]);
+            }
+
+            fileOutputStream.close();
+            System.out.println("Файл PPM успешно сохранен.");
         } catch (IOException e) {
             e.printStackTrace();
         }

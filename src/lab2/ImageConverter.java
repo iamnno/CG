@@ -6,28 +6,55 @@ import java.io.IOException;
 public class ImageConverter {
 
     public static void main(String[] args) throws IOException {
-          String ppmFile = "image.ppm";
-          PPMImageData ppmData = new PPMImageReader().readImage(ppmFile);
 
-          byte[] imagePixels = ppmData.getImagePixels();
-          int width = ppmData.getWidth();
-          int height = ppmData.getHeight();
+        String inputFilePath = null;
+        String goalFormat = null;
+        String outputFilePath = null;
 
-          String ppmEndFile = "copy.ppm";
-          convertPPMToPpm(imagePixels, width, height, ppmEndFile);
+        for (String arg : args) {
+            if (arg.startsWith("--source=")) {
+                inputFilePath = arg.substring("--source=".length());
+            } else if (arg.startsWith("--goal-format=")) {
+                goalFormat = arg.substring("--goal-format=".length());
+            } else if (arg.startsWith("--output=")) {
+                outputFilePath = arg.substring("--output=".length());
+            }
+        }
 
-//        BMPImageData bmpData = new BMPImageReader().readImage(bmpFile);
-//        byte[] imagePixels = bmpData.getImagePixels();
-//        int width = bmpData.getWidth();
-//        int height = bmpData.getHeight();
+        if (inputFilePath == null || goalFormat == null) {
+            System.out.println("Error: Missing required arguments!");
+            System.out.println("Usage: java lab2.ImageConverter --source=<sourceFile> --goal-format=<goalFormat> [--output=<outputFile>]");
+            return;
+        }
+        if (outputFilePath == null) outputFilePath = inputFilePath.replace(".bmp",".ppm");
+
+        if (goalFormat.equals("ppm")){
+            BMPImageData bmpData = new BMPImageReader().readImage(inputFilePath);
+            byte[] imagePixels = bmpData.getImagePixels();
+            int width = bmpData.getWidth();
+            int height = bmpData.getHeight();
+
+            try {
+                convertBmpToPpm(imagePixels, width, height, outputFilePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+//          String ppmFile = "image.ppm";
+//          PPMImageData ppmData = new PPMImageReader().readImage(ppmFile);
 //
-//        String ppmFile = "D:/!IK-02/3_2 CG/t11111.ppm";
+//          byte[] imagePixels = ppmData.getImagePixels();
+//          int width = ppmData.getWidth();
+//          int height = ppmData.getHeight();
 //
-//        try {
-//            convertBmpToPpm(imagePixels, width, height, ppmFile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+//          String ppmEndFile = "copy.ppm";
+//          convertPPMToPpm(imagePixels, width, height, ppmEndFile);
+
     }
 
     public static void convertPPMToPpm(byte[] imagePixels, int width, int height, String ppmFile) throws IOException {

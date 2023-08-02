@@ -2,6 +2,7 @@ package lab2;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class ImageConverter {
 
@@ -39,42 +40,65 @@ public class ImageConverter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (goalFormat.equals("bmp")){
+//            PPMImageData ppmData = new PPMImageReader().readImage(inputFilePath);
+//
+//            String bmpFile = (outputFilePath != null) ? outputFilePath : inputFilePath.replace(".ppm", ".bmp");
+//            convertPpmToBmp(ppmData, bmpFile);
         }
 
 
 
-
-
-//          String ppmFile = "image.ppm";
-//          PPMImageData ppmData = new PPMImageReader().readImage(ppmFile);
-//
-//          byte[] imagePixels = ppmData.getImagePixels();
-//          int width = ppmData.getWidth();
-//          int height = ppmData.getHeight();
-//
-//          String ppmEndFile = "copy.ppm";
-//          convertPPMToPpm(imagePixels, width, height, ppmEndFile);
-
     }
 
-    public static void convertPPMToPpm(byte[] imagePixels, int width, int height, String ppmFile) throws IOException {
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(ppmFile);
-            String ppmHeader = "P6\n" + width + " " + height + "\n255\n";
-            fileOutputStream.write(ppmHeader.getBytes());
-            reverseArray(imagePixels);
-
-
-            for (int i = 0; i < imagePixels.length; i++) {
-                fileOutputStream.write(imagePixels[i]);
-            }
-
-            fileOutputStream.close();
-            System.out.println("Файл PPM успешно сохранен.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void convertPpmToBmp(PPMImageData ppmData, String bmpFile) throws IOException {
+//        try (FileOutputStream fileOutputStream = new FileOutputStream(bmpFile)) {
+//            int width = ppmData.getWidth();
+//            int height = ppmData.getHeight();
+//            byte[] imagePixels = ppmData.getImagePixels();
+//            int imageSize = width * height * 3;
+//            int imageDataOffset = 54;
+//            int fileSize = imageSize + imageDataOffset;
+//
+//            // BMP Header (14 байт)
+//            fileOutputStream.write(new byte[]{(byte) 'B', (byte) 'M'});
+//            fileOutputStream.write(intToByteArray(fileSize));
+//            fileOutputStream.write(new byte[]{0, 0, 0, 0});
+//            fileOutputStream.write(intToByteArray(imageDataOffset));
+//
+//            // BMP Info Header (40 байт)
+//            fileOutputStream.write(intToByteArray(40));
+//            fileOutputStream.write(intToByteArray(width));
+//            fileOutputStream.write(intToByteArray(height));
+//            fileOutputStream.write(new byte[]{1, 0});
+//            fileOutputStream.write(new byte[]{24, 0});
+//            fileOutputStream.write(new byte[]{0, 0, 0, 0});
+//            fileOutputStream.write(new byte[]{0, 0, 0, 0});
+//            fileOutputStream.write(new byte[]{0, 0, 0, 0});
+//            fileOutputStream.write(new byte[]{0, 0, 0, 0});
+//            fileOutputStream.write(new byte[]{0, 0, 0, 0});
+//
+//            // BMP Data (24 бита на пиксель, инвертируем порядок байтов)
+//            for (int i = imageSize - 3; i >= 0; i -= 3) {
+//                byte blue = imagePixels[i];
+//                byte green = imagePixels[i + 1];
+//                byte red = imagePixels[i + 2];
+//
+//                fileOutputStream.write(blue);
+//                fileOutputStream.write(green);
+//                fileOutputStream.write(red);
+//            }
+//        }
+//    }
+//
+//    private static byte[] intToByteArray(int value) {
+//        return new byte[]{
+//                (byte) (value & 0x000000FF),
+//                (byte) ((value >> 8) & 0x000000FF),
+//                (byte) ((value >> 16) & 0x000000FF),
+//                (byte) ((value >> 24) & 0x000000FF)
+//        };
+//    }
 
     public static void convertBmpToPpm(byte[] imagePixels, int width, int height, String ppmFile) throws IOException {
         try {

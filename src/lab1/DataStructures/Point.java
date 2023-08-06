@@ -46,10 +46,11 @@ public class Point {
     }
 
     // Метод для додавання вектора до точки
-    public void add(Vector3D vector) {
+    public Point add(Vector3D vector) {
         x += vector.getX();
         y += vector.getY();
         z += vector.getZ();
+        return new Point(x, y, z);
     }
 
     // Метод для обчислення відстані між поточною точкою та іншою точкою
@@ -64,6 +65,14 @@ public class Point {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ")";
+    }
+
+    // Виконує віднімання двох точок та повертає вектор, що є різницею між цими точками.
+    public Vector3D subtract(Point other) {
+        double dx = x - other.x;
+        double dy = y - other.y;
+        double dz = z - other.z;
+        return new Vector3D(dx, dy, dz);
     }
 
     // Перевизначення методу equals для порівняння двох об'єктів Point

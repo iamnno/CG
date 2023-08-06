@@ -141,4 +141,9 @@ public class Vector3D {
     public Vector3D reverse() {
         return new Vector3D(-this.x, -this.y, -this.z);
     }
+
+    // Метод для масштабування вектора
+    public Vector3D scale(double factor) {
+        return new Vector3D(x * factor, y * factor, z * factor);
+    }
 }

@@ -28,7 +28,8 @@ public class MainLab3 {
             }
         }
 
-        List<double[]> vertices = OBJFileReader.readOBJ(inputFilePath);
+        List<double[]> vertices = OBJFileReader.readOBJVertices(inputFilePath);
+        List<Triangle> triangles = OBJFileReader.readOBJTriangles(inputFilePath);
 
         // Проходим по каждой вершине и устанавливаем соответствующий пиксель на изображении
         for (double[] vertex : vertices) {

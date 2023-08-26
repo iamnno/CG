@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OBJFileReader {
-    public static List<double[]> readOBJ(String filePath) throws IOException {
+    public static List<double[]> readOBJVertices(String filePath) throws IOException {
         List<double[]> vertices = new ArrayList<>();
 
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -25,4 +25,24 @@ public class OBJFileReader {
 
         return vertices;
     }
+
+    public static List<Triangle> readOBJTriangles(String filePath) throws IOException {
+        List<Triangle> triangles = new ArrayList<>();
+
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith("f ")) {
+                String[] indices = line.split("\\s+");
+                int v1 = Integer.parseInt(indices[1]) - 1; // Индексы вершин начинаются с 1
+                int v2 = Integer.parseInt(indices[2]) - 1;
+                int v3 = Integer.parseInt(indices[3]) - 1;
+                triangles.add(new Triangle(v1, v2, v3));
+            }
+        }
+        reader.close();
+
+        return triangles;
+    }
+
 }
